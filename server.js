@@ -5,7 +5,7 @@ const cors = require('cors');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const config = require('./config/database');
-
+const users = require('./routes/users');
 //Connect to database
 mongoose.connect(config.database);
 
@@ -22,7 +22,12 @@ const app = express();
 //Body Parser Middleware (to get data from post req)
 app.use(bodyParser.json());
 
-const users = require('./routes/users');
+//Passport Middleware (jwt)
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./config/passport')(passport);
+
 
 //Port Number
 const port = 3000;
